@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 // Hardcoded credentials
 const ADMIN_USERNAME = 'sathish';
-const ADMIN_PASSWORD = 'sathish123';
+const ADMIN_PASSWORD = 'sathish@123';
 
 // Login with hardcoded credentials
 router.post('/login', (req, res) => {
