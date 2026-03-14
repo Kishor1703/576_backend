@@ -30,7 +30,7 @@ app.use('/api/photos', require('./routes/photos'));
 app.use('/api/pricing', require('./routes/pricing'));
 
 // MongoDB Connection
-mongoose.connect(process.env.URI)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('MongoDB Error:', err));
 
