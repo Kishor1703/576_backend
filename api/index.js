@@ -32,6 +32,12 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+app.use(express.json());
+app.use('/uploads', express.static(uploadsDir));
+
+// Routes that do not require MongoDB
+app.use('/api/auth', require('../routes/auth'));
+
 const connectToDatabase = async () => {
   if (isConnected) return;
 
@@ -49,11 +55,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
-
 // Routes
-app.use('/api/auth', require('../routes/auth'));
 app.use('/api/queries', require('../routes/queries'));
 app.use('/api/photos', require('../routes/photos'));
 app.use('/api/pricing', require('../routes/pricing'));
