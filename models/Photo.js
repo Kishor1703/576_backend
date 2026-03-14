@@ -7,7 +7,7 @@ const PhotoSchema = new mongoose.Schema({
     required: true,
     enum: ['Wedding', 'Baby Shower', 'Portrait', 'Engagement', 'Birthday', 'Corporate', 'Other']
   },
-  filename: { type: String, required: true },
+  filename: { type: String, default: '' },
   url: { type: String, required: true },
   featured: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
