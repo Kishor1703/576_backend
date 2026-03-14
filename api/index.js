@@ -10,6 +10,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
+let isConnected = false;
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -26,14 +27,9 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-      return;
-    }
-
-    callback(new Error('Not allowed by CORS'));
-  }
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -44,10 +40,21 @@ app.use('/api/queries', require('../routes/queries'));
 app.use('/api/photos', require('../routes/photos'));
 app.use('/api/pricing', require('../routes/pricing'));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB Error:', err));
+const connectToDatabase = async () => {
+  if (isConnected) return;
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  await mongoose.connect(process.env.MONGO_URI);
+  isConnected = true;
+};
+
+app.use(async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (err) {
+    console.error('MongoDB Error:', err);
+    res.status(500).json({ message: 'Database connection failed' });
+  }
+});
+
+module.exports = app;
