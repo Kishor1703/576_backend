@@ -7,7 +7,7 @@ const Photo = require('../models/Photo');
 const auth = require('../middleware/auth');
 
 const uploadsDir = path.join(__dirname, '../uploads');
-const MAX_FILE_SIZE = 25 * 1024 * 1024;
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -42,7 +42,7 @@ const uploadPhoto = (req, res, next) => {
     }
 
     if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
-      res.status(413).json({ message: 'Photo must be 25MB or smaller' });
+      res.status(413).json({ message: 'Photo must be 4MB or smaller on the deployed site' });
       return;
     }
 
