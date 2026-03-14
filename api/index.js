@@ -24,10 +24,10 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/queries', require('./routes/queries'));
-app.use('/api/photos', require('./routes/photos'));
-app.use('/api/pricing', require('./routes/pricing'));
+app.use('/api/auth', require('../routes/auth'));
+app.use('/api/queries', require('../routes/queries'));
+app.use('/api/photos', require('../routes/photos'));
+app.use('/api/pricing', require('../routes/pricing'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
