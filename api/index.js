@@ -13,7 +13,7 @@ const app = express();
 let isConnected = false;
 
 // Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, 'uploads');
+const uploadsDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
   console.log('Uploads directory created');
@@ -31,14 +31,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Routes
-app.use('/api/auth', require('../routes/auth'));
-app.use('/api/queries', require('../routes/queries'));
-app.use('/api/photos', require('../routes/photos'));
-app.use('/api/pricing', require('../routes/pricing'));
 
 const connectToDatabase = async () => {
   if (isConnected) return;
@@ -56,5 +48,14 @@ app.use(async (req, res, next) => {
     res.status(500).json({ message: 'Database connection failed' });
   }
 });
+
+app.use(express.json());
+app.use('/uploads', express.static(uploadsDir));
+
+// Routes
+app.use('/api/auth', require('../routes/auth'));
+app.use('/api/queries', require('../routes/queries'));
+app.use('/api/photos', require('../routes/photos'));
+app.use('/api/pricing', require('../routes/pricing'));
 
 module.exports = app;
