@@ -22,7 +22,6 @@ if (!fs.existsSync(uploadsDir)) {
 // Middleware
 const allowedOrigins = [
   'https://567megapixels.vercel.app',
-  'https://576megapixels.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000'
 ];
